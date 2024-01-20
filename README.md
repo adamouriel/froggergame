@@ -24,4 +24,4 @@ Use the arrow keys to move the frog left, right, up and down to avoid getting hi
 
 ## Wireframe
 
-![Uploading Screenshot 2024-01-20 at 1.30.36 PM.png…]()
+![Wireframe](https://github.com/adamouriel/froggergame/blob/main/wireframe.jpg)
