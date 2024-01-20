@@ -13,7 +13,7 @@ Use the arrow keys to move the frog left, right, up and down to avoid getting hi
 
 -Scroll backgrounds and hazards to simulate moving across lanes
 
--Detect collision between sprites to handle losing lives/resetting
+-Detect collision between sprites to handle resetting
 
 ## PMVP Features
 -Background music
