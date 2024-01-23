@@ -11,10 +11,21 @@ let downPressed = false;
 
 const frog = {
     x: canvas.width * .5,
-    y: 700,
+    y: canvas.height * .87,
     radius: 20,
     color: 'green',
 }
+
+const baseWidth = canvas.width;
+const baseHeight = canvas.height / 5;
+const baseX = 0;
+const baseY = canvas.height *.8;
+
+const obstacles = [];
+const obstacleWidth = 50;
+const obstacleGap = 150;
+const obstacleInterval = 500;
+
 
 function drawFrog(){
     // Body
@@ -61,33 +72,82 @@ function drawFrog(){
     ctx.closePath();
 }
 
-const baseWidth = canvas.width;
-const baseHeight = canvas.height / 5;
-const baseX = 0;
-const baseY = canvas.height *.8;
-
+function drawBase(){
 ctx.fillStyle = 'grey';
 ctx.fillRect(baseX, baseY, baseWidth, baseHeight)
 const borderWidth = 5; 
 ctx.strokeStyle = 'black'; 
 ctx.lineWidth = borderWidth; 
 ctx.strokeRect(baseX, baseY, baseWidth, baseHeight);
+}
 
-drawFrog()
+function drawObstacles() {
+    obstacles.forEach(obstacle => {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(obstacle.x, 0, obstacleWidth, obstacle.top);
+        ctx.fillRect(obstacle.x, canvas.height - obstacle.bottom, obstacleWidth, obstacle.bottom);
+    });
+}
+
+function updateObstacles() {
+    if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - obstacleInterval) {
+        let top = Math.floor(Math.random() * (canvas.width - obstacleGap));
+        let bottom = canvas.width - top - obstacleGap;
+        obstacles.push({y: canvas.height, top, bottom});
+    }
+    
+    obstacles.forEach(obstacle => obstacle.x -= 2);
+
+    if (obstacles.length > 0 && obstacles[0].x < -obstacleWidth) {
+        obstacles.shift();
+    }
+}
+
+function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBase();
+    drawFrog();
+    if (rightPressed){
+        frog.x = Math.min(frog.x + 20, canvas.width - 30)
+    } else if (leftPressed){
+        if (frog.x - 37 > 0){
+        frog.x = Math.max(frog.x - 20, 0)}
+    } else if (upPressed){
+        if (frog.y-50 > 0){
+        frog.y = Math.min(frog.y - 20, canvas.height - 100)}
+    } else if (downPressed){
+        frog.y = Math.min(frog.y + 20, canvas.height - 45)
+    }
+    updateObstacles();
+    drawObstacles();
+    requestAnimationFrame(draw);
+}
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
 function keyDownHandler(e) {
-    if (e.key === "Right" || "ArrowRight"){
+    if (e.key === "Right" || e.key === "ArrowRight"){
         rightPressed = true;
     } else if (e.key === "Left" || e.key === "ArrowLeft"){
         leftPressed = true;
+    } else if (e.key === "Up" || e.key === "ArrowUp") {
+        upPressed = true;
+    } else if (e.key === "Down" || e.key === "ArrowDown") {
+        downPressed = true;
     }
 }
 
 function keyUpHandler(e){
-    if (e.key === "Right" || "ArrowRight"){
-        rightPressed = "false";
+    if (e.key === "Right" || e.key === "ArrowRight"){
+        rightPressed = false;
+    } else if (e.key === "Left" || e.key === "ArrowLeft"){
+        leftPressed = false
+    } else if (e.key === "Up" || e.key === "ArrowUp") {
+        upPressed = false;
+    } else if (e.key === "Down" || e.key === "ArrowDown") {
+        downPressed = false;
     }
 }
+
+draw()
