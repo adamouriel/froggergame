@@ -207,13 +207,13 @@ function updateObstacles() {
 function updateLogs() {
     for (let i = logs.length - 1; i >= 0; i--) {
         logs[i].x -= horizontalSpeed;
-        if (logs[i].x + obstacleWidth < 0) {
+        if (logs[i].x + logWidth < 0) {
             logs.splice(i, 1);
         }
     }
     for (let i = logs2.length - 1; i >= 0; i--) {
         logs2[i].x -= horizontalSpeed * 1.2;
-        if (logs2[i].x + obstacleWidth * 1.4 < 0) {
+        if (logs2[i].x + logWidth * 1.4 < 0) {
             logs2.splice(i, 1);
         }
     }
@@ -327,17 +327,27 @@ function drawOcean() {
     ctx.fillStyle = oceanGradient;
     ctx.fillRect(0, 0, canvas.width, oceanHeight);
 }
+
+function drawGrass() {
+    const grassTop = 0;
+    const grassBottom = canvas.height * .7 - 755;
+    ctx.fillStyle = '#0f9d58';
+    ctx.fillRect(0, grassTop, canvas.width, grassBottom - grassTop);
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawRoad();
     drawSand();
     drawOcean();
+    drawGrass();
     gameOver()
     if (isGameOver) {
         drawGameOver();
         return;
     }
     drawBase();
+    drawLogs();
     drawFrog();
     if (rightPressed) {
         frog.x = Math.min(frog.x + 20, canvas.width - 30)
@@ -355,7 +365,6 @@ function draw() {
     updateObstacles();
     drawObstacles();
     checkCollision();
-    drawLogs();
     updateLogs();
     drawLives();
     requestAnimationFrame(draw);
