@@ -27,7 +27,7 @@ const obstacles3 = [];
 const logs = [];
 const logs2 = [];
 const obstacleWidth = 150;
-const obstacleHeight = 75;
+const obstacleHeight = 70;
 const logWidth = 300;
 const logHeight = 75;
 const horizontalSpeed = 5;
@@ -86,10 +86,10 @@ function drawFrog() {
 }
 
 function drawBase() {
-    ctx.fillStyle = 'grey';
+    ctx.fillStyle = 'black';
     ctx.fillRect(baseX, baseY, baseWidth, baseHeight)
     const borderWidth = 5;
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'yellow';
     ctx.lineWidth = borderWidth;
     ctx.strokeRect(baseX, baseY, baseWidth, baseHeight);
 }
@@ -133,10 +133,10 @@ function spawnObstacle3() {
 
 spawnObstacle3()
 
-function spawnLogs(){
+function spawnLogs() {
     const newLogs = {
         x: canvas.width,
-        y: canvas.height * .7 - 620,
+        y: canvas.height * .7 - 630,
         width: logWidth,
         height: logHeight,
     };
@@ -146,7 +146,7 @@ function spawnLogs(){
 
 spawnLogs()
 
-function spawnLogs2(){
+function spawnLogs2() {
     const newLogs2 = {
         x: canvas.width,
         y: canvas.height * .7 - 750,
@@ -161,16 +161,57 @@ spawnLogs2()
 
 function drawObstacles() {
     obstacles.forEach(obstacle => {
-        ctx.fillStyle = 'red';
+        // Car body
+        ctx.fillStyle = 'red'; // Color for the first type of car
         ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
+
+        // Wheels
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(obstacle.x + 20, obstacle.y + obstacleHeight, 10, 0, Math.PI * 2);
+        ctx.arc(obstacle.x + obstacleWidth - 20, obstacle.y + obstacleHeight, 10, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Windows
+        ctx.fillStyle = 'lightgrey';
+        ctx.fillRect(obstacle.x + 20, obstacle.y + 10, 50, 30);
+        ctx.fillRect(obstacle.x + obstacleWidth - 70, obstacle.y + 10, 50, 30);
     });
+
     obstacles2.forEach(obstacle => {
-        ctx.fillStyle = 'blue';
+        // Car body
+        ctx.fillStyle = 'blue'; // Color for the second type of car
         ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth * 1.4, obstacleHeight);
+
+        // Wheels
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(obstacle.x + 20, obstacle.y + obstacleHeight, 10, 0, Math.PI * 2);
+        ctx.arc(obstacle.x + obstacleWidth * 1.4 - 20, obstacle.y + obstacleHeight, 10, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Windows
+        ctx.fillStyle = 'lightgrey';
+        ctx.fillRect(obstacle.x + 30, obstacle.y + 10, 60, 30);
+        ctx.fillRect(obstacle.x + obstacleWidth * 1.4 - 90, obstacle.y + 10, 60, 30);
     });
+
     obstacles3.forEach(obstacle => {
-        ctx.fillStyle = 'purple';
+        // Car body
+        ctx.fillStyle = 'purple'; // Color for the third type of car
         ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth * 1.8, obstacleHeight);
+
+        // Wheels
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(obstacle.x + 30, obstacle.y + obstacleHeight, 12, 0, Math.PI * 2);
+        ctx.arc(obstacle.x + obstacleWidth * 1.8 - 30, obstacle.y + obstacleHeight, 12, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Windows
+        ctx.fillStyle = 'lightgrey';
+        ctx.fillRect(obstacle.x + 40, obstacle.y + 10, 70, 30);
+        ctx.fillRect(obstacle.x + obstacleWidth * 1.8 - 110, obstacle.y + 10, 70, 30);
     });
 }
 function drawLogs() {
@@ -246,6 +287,24 @@ function checkCollision() {
     });
 }
 
+// function checkForOceanLanding() {
+//     const oceanTop = 0;
+//     const oceanBottom = canvas.height / 3.9;
+//         if (frog.y - frog.radius < oceanBottom) {
+//             let onLog = false;
+//             [...logs, ...logs2].forEach(log => {
+//                 if (frog.x > log.x && frog.x < log.x + log.width &&
+//                     frog.y - frog.radius > log.y && frog.y + frog.radius < log.y + log.height) {
+//                     onLog = true;
+//                 }
+//             });
+    
+//             if (!onLog) {
+//                 handleCollision();
+//             }
+//         }
+//     }
+
 function handleCollision() {
     frog.x = canvas.width * .5
     frog.y = canvas.height * .87
@@ -285,7 +344,7 @@ function resetGame() {
 function drawRoad() {
     const roadTop = canvas.height * .7 - 410;
     const roadBottom = canvas.height * .8 + obstacleHeight;
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'grey';
     ctx.fillRect(0, roadTop, canvas.width, roadBottom - roadTop);
 
     const dottedLineSections = 3;
@@ -308,12 +367,12 @@ function drawDottedLine(startX, startY, lineWidth, lineHeight) {
     }
 }
 function drawSand() {
-    const sandTop = canvas.height / 3.9; 
-    const roadTop = canvas.height * .7 - 410; 
+    const sandTop = canvas.height / 3.9;
+    const roadTop = canvas.height * .7 - 410;
 
     const sandGradient = ctx.createLinearGradient(0, sandTop, 0, roadTop);
-    sandGradient.addColorStop(0, '#f2d16b'); 
-    sandGradient.addColorStop(1, '#e0c080'); 
+    sandGradient.addColorStop(0, '#f2d16b');
+    sandGradient.addColorStop(1, '#e0c080');
 
     ctx.fillStyle = sandGradient;
     ctx.fillRect(0, sandTop, canvas.width, roadTop - sandTop);
@@ -357,6 +416,9 @@ function draw() {
         }
     } else if (upPressed) {
         if (frog.y - 50 > 0) {
+            if (frog.y - 50 <= canvas.height / 4) {
+                frog.y = Math.min(frog.y - 20, canvas.height - 100)
+            }
             frog.y = Math.min(frog.y - 15, canvas.height - 100)
         }
     } else if (downPressed) {
@@ -365,6 +427,7 @@ function draw() {
     updateObstacles();
     drawObstacles();
     checkCollision();
+    // checkForOceanLanding();
     updateLogs();
     drawLives();
     requestAnimationFrame(draw);
