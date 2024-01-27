@@ -29,7 +29,7 @@ const logs2 = [];
 const obstacleWidth = 150;
 const obstacleHeight = 70;
 const logWidth = 300;
-const logHeight = 75;
+const logHeight = 110;
 const horizontalSpeed = 5;
 const logSpeed = 3;
 const maxInterval = 1500;
@@ -38,6 +38,25 @@ const oceanTop = 0;
 const oceanBottom = canvas.height / 4.22;
 const grassTop = 0;
 const grassBottom = canvas.height * .7 - 755;
+let safe = false;
+let livesX = 20;
+let isWinning = false;
+let frogWallpaper = new Image ();
+frogWallpaper.src = '4Yxe9lM-funny-3d-wallpaper.jpg'
+let logImage = new Image();
+logImage.src = 'log.png';
+let grassImage = new Image();
+grassImage.src = 'river_bank.png';
+let oceanImage = new Image();
+oceanImage.src = 'background.png';
+// let yellowCar = new Image ();
+// yellowCar.src = 'redCar.png'
+let frogImage = new Image();
+frogImage.src = 'frog.png'
+let sandImage = new Image();
+sandImage.src = 'sand.jpg'
+let baseImage = new Image ();
+baseImage.src = 'base.png';
 
 let lives = 3;
 let isGameOver = false;
@@ -45,59 +64,64 @@ let isGameOver = false;
 
 
 function drawFrog() {
+    let frogWidth = 80; // Set the width you want for the frog
+    let frogHeight = 80; // Set the height you want for the frog
+
+    // Adjust the position to center the image around the frog's coordinates
+    let frogDrawX = frog.x - frogWidth / 2;
+    let frogDrawY = frog.y - frogHeight / 2;
+
+    ctx.drawImage(frogImage, frogDrawX, frogDrawY, frogWidth, frogHeight);
     // Body
-    ctx.fillStyle = frog.color;
-    ctx.beginPath();
-    ctx.ellipse(frog.x, frog.y, 20, 30, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
-    // Eyes
-    ctx.fillStyle = 'white';
-    ctx.beginPath();
-    ctx.arc(frog.x - 8, frog.y - 10, 6, 0, Math.PI * 2);
-    ctx.arc(frog.x + 8, frog.y - 10, 6, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
-    // Pupils
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    ctx.arc(frog.x - 8, frog.y - 10, 2, 0, Math.PI * 2);
-    ctx.arc(frog.x + 8, frog.y - 10, 2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
-    // Hind Legs
-    ctx.fillStyle = frog.color;
-    ctx.beginPath();
-    ctx.ellipse(frog.x - 10, frog.y + 20, 10, 20, Math.PI / 4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
+    // ctx.fillStyle = frog.color;
+    // ctx.beginPath();
+    // ctx.ellipse(frog.x, frog.y, 20, 30, 0, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
+    // // Eyes
+    // ctx.fillStyle = 'white';
+    // ctx.beginPath();
+    // ctx.arc(frog.x - 8, frog.y - 10, 6, 0, Math.PI * 2);
+    // ctx.arc(frog.x + 8, frog.y - 10, 6, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
+    // // Pupils
+    // ctx.fillStyle = 'black';
+    // ctx.beginPath();
+    // ctx.arc(frog.x - 8, frog.y - 10, 2, 0, Math.PI * 2);
+    // ctx.arc(frog.x + 8, frog.y - 10, 2, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
+    // // Hind Legs
+    // ctx.fillStyle = frog.color;
+    // ctx.beginPath();
+    // ctx.ellipse(frog.x - 10, frog.y + 20, 10, 20, Math.PI / 4, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
 
-    ctx.beginPath();
-    ctx.ellipse(frog.x + 10, frog.y + 20, 10, 20, -Math.PI / 4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
+    // ctx.beginPath();
+    // ctx.ellipse(frog.x + 10, frog.y + 20, 10, 20, -Math.PI / 4, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
 
-    // Front Legs
-    ctx.beginPath();
-    ctx.ellipse(frog.x - 15, frog.y + 15, 8, 16, Math.PI / 4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
+    // // Front Legs
+    // ctx.beginPath();
+    // ctx.ellipse(frog.x - 15, frog.y + 15, 8, 16, Math.PI / 4, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
 
-    ctx.beginPath();
-    ctx.ellipse(frog.x + 15, frog.y + 15, 8, 16, -Math.PI / 4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
+    // ctx.beginPath();
+    // ctx.ellipse(frog.x + 15, frog.y + 15, 8, 16, -Math.PI / 4, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
 }
 
 function drawBase() {
-    ctx.fillStyle = 'black';
-    ctx.fillRect(baseX, baseY, baseWidth, baseHeight)
-    const borderWidth = 5;
-    ctx.strokeStyle = 'yellow';
-    ctx.lineWidth = borderWidth;
-    ctx.strokeRect(baseX, baseY, baseWidth, baseHeight);
-}
+    const increasedBaseHeight = canvas.height / 1.1; // Adjust this value as needed
+    const newBaseY = canvas.height - increasedBaseHeight; // Adjust Y-coordinate to keep the base at bottom
 
+    ctx.drawImage(baseImage, baseX, newBaseY, baseWidth, increasedBaseHeight);
+}
 function spawnObstacle() {
     const newObstacle = {
         x: canvas.width,
@@ -165,9 +189,10 @@ spawnLogs2()
 
 function drawObstacles() {
     obstacles.forEach(obstacle => {
-        // Car body
+        // // Car body
         ctx.fillStyle = 'red'; 
         ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
+        // ctx.drawImage(yellowCar, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
 
         // Wheels
         ctx.fillStyle = 'black';
@@ -220,15 +245,12 @@ function drawObstacles() {
 }
 function drawLogs() {
     logs.forEach(log => {
-        ctx.fillStyle = 'brown';
-        ctx.fillRect(log.x, log.y, logWidth, logHeight);
+        ctx.drawImage(logImage, log.x, log.y, logWidth, logHeight);
     });
     logs2.forEach(log => {
-        ctx.fillStyle = 'brown';
-        ctx.fillRect(log.x, log.y, logWidth * 1.4, obstacleHeight);
+        ctx.drawImage(logImage, log.x, log.y, logWidth * 1.4, logHeight);
     });
 }
-
 function updateObstacles() {
     for (let i = obstacles.length - 1; i >= 0; i--) {
         obstacles[i].x -= horizontalSpeed;
@@ -251,13 +273,13 @@ function updateObstacles() {
 }
 function updateLogs() {
     for (let i = logs.length - 1; i >= 0; i--) {
-        logs[i].x -= logSpeed;
+        logs[i].x -= horizontalSpeed;
         if (logs[i].x + logWidth < 0) {
             logs.splice(i, 1);
         }
     }
     for (let i = logs2.length - 1; i >= 0; i--) {
-        logs2[i].x -= logSpeed;
+        logs2[i].x -= horizontalSpeed;
         if (logs2[i].x + logWidth * 1.4 < 0) {
             logs2.splice(i, 1);
         }
@@ -291,29 +313,75 @@ function checkCollision() {
     });
 }
 
+function collision(first, second){
+    return !(first.x > second.x + second.width ||
+        first.x + first.width < second.x ||
+        first.y > second.y + second.height ||
+        first.y + first.height < second.y)
+}
+
+// function checkForOceanLanding() {
+//     if (frog.y - frog.radius < oceanBottom * .83 && frog.y - frog.radius/2 > grassBottom) {
+//         console.log('You are above water');
+//         safe = false;
+
+//         let allLogs = logs.concat(logs2);
+//         for (let i = 0; i < allLogs.length; i++) {
+//             if (collision(frog, allLogs[i])) {
+//                 frog.x -= horizontalSpeed; 
+//                 safe = true;
+//                 console.log('safe')
+//                 if (frog.x - frog.radius < 0) {
+//                     handleCollision();
+//                 }
+//                 break; 
+//             }
+//         }
+
+//         if (!safe) {
+//             console.log('not safe')
+//             handleCollision();
+//         }
+//     }
+// }
 function checkForOceanLanding() {
-        if (frog.y - frog.radius < oceanBottom) {
-            console.log('You are above water');
-            let onLog = false;
-            [...logs, ...logs2].forEach(log => {
-                if (frog.x > log.x && frog.x < log.x + log.width &&
-                    frog.y - frog.radius > log.y && frog.y + frog.radius < log.y + log.height) {
-                    onLog = true;
+    if (frog.y - frog.radius < oceanBottom * .83 && frog.y - frog.radius/2 > grassBottom) {
+        console.log('You are above water');
+        safe = true;
+
+        let frogBoundingBox = {
+            x: frog.x - frog.radius,
+            y: frog.y - frog.radius,
+            width: frog.radius * 2,
+            height: frog.radius * 2
+        };
+
+        let allLogs = logs.concat(logs2);for (let log of allLogs) {
+            let logBoundingBox = {
+                x: log.x,
+                y: log.y,
+                width: log.width,
+                height: log.height
+            };
+        
+        
+            if (collision(frogBoundingBox, logBoundingBox)) {
+                frog.x -= logSpeed; // Adjust frog's position as log moves
+                safe = true;
+                console.log('safe');
+                if (frog.x - frog.radius < 0) {
+                    handleCollision();
                 }
-                console.log('Landed on Log');
-                console.log('frog.x - ', frog.x);
-                console.log('frog.y - ', frog.y);
-                console.log('log.y - ', log.y);
-                console.log('log.x - ', log.x);
-            });
-    
-            if (!onLog) {
-                console.log('You Missed')
+                break;
+            }
+
+            if (!safe) {
+                console.log('not safe');
                 handleCollision();
             }
-        }
     }
-
+}
+}
 function handleCollision() {
     frog.x = canvas.width * .5
     frog.y = canvas.height * .87
@@ -321,22 +389,37 @@ function handleCollision() {
 }
 
 function drawLives() {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.3)"; 
+    ctx.fillRect(0, 0, 100, 50);
     ctx.font = '20px Arial';
     ctx.fillStyle = 'black';
-    ctx.fillText('Lives: ' + lives, 20, 30);
+    ctx.fillText('Lives: ' + lives, livesX, 30);
 }
 
 function checkIfFrogOnGrass() {
-    if (frog.y - frog.radius > grassTop && frog.y + frog.radius < grassBottom) {
+    if (frog.y - frog.radius + 20 > grassTop && frog.y + frog.radius*2.5 < grassBottom) {
         handleWin();
     }
 }
 
-function handleWin() {
-    alert("You win! Press Enter to play again.");
-    resetGame();
+
+function drawWinMessage() {
+    ctx.drawImage(frogWallpaper, 0, 0, canvas.width, canvas.height);
+    ctx.font = '48px Arial';
+    ctx.fillStyle = 'green';
+    ctx.textAlign = 'center';
+    ctx.fillText('You Win!', canvas.width / 2, canvas.height / 4);
+    ctx.font = '24px Arial';
+    ctx.fillText('Press Enter to play again', canvas.width / 2, canvas.height / 4 + 50);
 }
 
+function handleWin() {
+    setTimeout(() => {
+        isWinning = true;
+        draw();
+    }, 1000);
+    horizontalSpeed = 5;
+}
 function gameOver() {
     if (lives === 0) {
         isGameOver = true
@@ -351,13 +434,16 @@ function drawGameOver() {
 }
 
 function resetGame() {
+    isWinning = false;
     frog.x = canvas.width * .5;
     frog.y = canvas.height * .87;
     isGameOver = false;
     lives = 3;
+    livesX = 50;
     obstacles.length = 0;
     obstacles2.length = 0;
     obstacles3.length = 0;
+    horizontalSpeed = 5;
     requestAnimationFrame(draw);
 }
 
@@ -390,67 +476,59 @@ function drawSand() {
     const sandTop = canvas.height / 3.9;
     const roadTop = canvas.height * .7 - 410;
 
-    const sandGradient = ctx.createLinearGradient(0, sandTop, 0, roadTop);
-    sandGradient.addColorStop(0, '#f2d16b');
-    sandGradient.addColorStop(1, '#e0c080');
+    // const sandGradient = ctx.createLinearGradient(0, sandTop, 0, roadTop);
+    // sandGradient.addColorStop(0, '#f2d16b');
+    // sandGradient.addColorStop(1, '#e0c080');
 
-    ctx.fillStyle = sandGradient;
-    ctx.fillRect(0, sandTop, canvas.width, roadTop - sandTop);
+    // ctx.fillStyle = sandGradient;
+    ctx.drawImage(sandImage, 0, sandTop, canvas.width, roadTop - sandTop);
 }
 
 function drawOcean() {
-    const oceanHeight = canvas.height / 3.9;
-    const oceanGradient = ctx.createLinearGradient(0, 0, 0, oceanHeight);
-    oceanGradient.addColorStop(0, 'deepskyblue');
-    oceanGradient.addColorStop(1, 'dodgerblue');
-    ctx.fillStyle = oceanGradient;
-    ctx.fillRect(0, 0, canvas.width, oceanHeight);
+    const oceanHeight = canvas.height / 1.6;
+    ctx.drawImage(oceanImage, 0, 0, canvas.width, oceanHeight);
 }
 
 function drawGrass() {
     const grassTop = 0;
-    const grassBottom = canvas.height * .7 - 755;
+    const grassBottom = canvas.height * .5
     ctx.fillStyle = '#0f9d58';
-    ctx.fillRect(0, grassTop, canvas.width, grassBottom - grassTop);
+    ctx.drawImage(grassImage, 0, grassTop, canvas.width, grassBottom - grassTop);
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawRoad();
-    drawSand();
-    drawOcean();
-    drawGrass();
-    gameOver()
-    if (isGameOver) {
-        drawGameOver();
-        return;
-    }
-    drawBase();
-    drawLogs();
-    drawFrog();
-    if (rightPressed) {
-        frog.x = Math.min(frog.x + 20, canvas.width - 30)
-    } else if (leftPressed) {
-        if (frog.x - 37 > 0) {
-            frog.x = Math.max(frog.x - 20, 0)
+        drawRoad();
+        drawSand();
+        drawOcean();
+        drawGrass();
+        drawBase();
+        if (isGameOver) {
+            drawGameOver();
+        } else if (isWinning) {
+            drawWinMessage();
+        } else {
+        drawLogs();
+        drawFrog();
+        if (rightPressed) {
+            frog.x = Math.min(frog.x + 20, canvas.width - 30);
+        } else if (leftPressed) {
+            frog.x = Math.max(frog.x - 20, 0);
+        } else if (upPressed) {
+            frog.y = Math.max(frog.y - 15, 0);
+        } else if (downPressed) {
+            frog.y = Math.min(frog.y + 15, canvas.height - 45);
         }
-    } else if (upPressed) {
-        if (frog.y - 50 > 0) {
-            if (frog.y - 50 <= canvas.height / 4) {
-                frog.y = Math.min(frog.y - 20, canvas.height - 100)
-            }
-            frog.y = Math.min(frog.y - 15, canvas.height - 100)
-        }
-    } else if (downPressed) {
-        frog.y = Math.min(frog.y + 15, canvas.height - 45)
+        updateObstacles();
+        drawObstacles();
+        checkCollision();
+        checkIfFrogOnGrass();
+        checkForOceanLanding();
+        updateLogs();
+        drawLives();
+        gameOver();
     }
-    updateObstacles();
-    drawObstacles();
-    checkCollision();
-    checkIfFrogOnGrass();
-    checkForOceanLanding();
-    updateLogs();
-    drawLives();
+
     requestAnimationFrame(draw);
 }
 
@@ -472,7 +550,11 @@ function keyDownHandler(e) {
 function keyUpHandler(e) {
     if (isGameOver && e.key === "Enter") {
         resetGame();
-        requestAnimationFrame(draw); // Restart the game loop
+        requestAnimationFrame(draw); 
+    }
+    if (isWinning && e.key === "Enter") {
+        resetGame();
+        requestAnimationFrame(draw)
     }
     if (e.key === "Right" || e.key === "ArrowRight") {
         rightPressed = false;
