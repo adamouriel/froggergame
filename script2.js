@@ -16,6 +16,8 @@ const frog = {
     color: 'green',
 }
 
+
+
 const baseWidth = canvas.width;
 const baseHeight = canvas.height / 5;
 const baseX = 0;
