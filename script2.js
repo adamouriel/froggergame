@@ -62,7 +62,6 @@ let lives = 3;
 let isGameOver = false;
 
 
-
 function drawFrog() {
     let frogWidth = 80; // Set the width you want for the frog
     let frogHeight = 80; // Set the height you want for the frog
@@ -347,42 +346,43 @@ function collision(first, second){
 function checkForOceanLanding() {
     if (frog.y - frog.radius < oceanBottom * .83 && frog.y - frog.radius/2 > grassBottom) {
         console.log('You are above water');
-        safe = true;
-
+        safe = false;
+ 
         let frogBoundingBox = {
             x: frog.x - frog.radius,
             y: frog.y - frog.radius,
             width: frog.radius * 2,
             height: frog.radius * 2
         };
-
-        let allLogs = logs.concat(logs2);for (let log of allLogs) {
+ 
+        let allLogs = logs.concat(logs2);
+        for (let log of allLogs) {
             let logBoundingBox = {
                 x: log.x,
                 y: log.y,
                 width: log.width,
-                height: log.height
+                height: log.height + 25
             };
-        
-        
+ 
             if (collision(frogBoundingBox, logBoundingBox)) {
-                frog.x -= logSpeed; // Adjust frog's position as log moves
+                frog.x -= logSpeed; // Move frog with the log
                 safe = true;
                 console.log('safe');
                 if (frog.x - frog.radius < 0) {
                     handleCollision();
                 }
-                break;
+                break; // Frog is safe, no need to check further
             }
-
-            if (!safe) {
-                console.log('not safe');
-                handleCollision();
-            }
+        }
+ 
+        if (!safe) {
+            console.log('not safe');
+            handleCollision();
+        }
     }
 }
-}
 function handleCollision() {
+    console.log("oh no")
     frog.x = canvas.width * .5
     frog.y = canvas.height * .87
     lives--
@@ -519,11 +519,11 @@ function draw() {
         } else if (downPressed) {
             frog.y = Math.min(frog.y + 15, canvas.height - 45);
         }
+        checkForOceanLanding();
         updateObstacles();
         drawObstacles();
         checkCollision();
         checkIfFrogOnGrass();
-        checkForOceanLanding();
         updateLogs();
         drawLives();
         gameOver();
