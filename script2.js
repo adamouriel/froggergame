@@ -49,76 +49,30 @@ let grassImage = new Image();
 grassImage.src = 'river_bank.png';
 let oceanImage = new Image();
 oceanImage.src = 'background.png';
-// let yellowCar = new Image ();
-// yellowCar.src = 'redCar.png'
 let frogImage = new Image();
 frogImage.src = 'frog.png'
 let sandImage = new Image();
 sandImage.src = 'sand.jpg'
 let baseImage = new Image ();
 baseImage.src = 'base.png';
+let backgroundMusic = document.getElementById('backgroundMusic');
+backgroundMusic.play();
 
 let lives = 3;
 let isGameOver = false;
 
 
 function drawFrog() {
-    let frogWidth = 80; // Set the width you want for the frog
-    let frogHeight = 80; // Set the height you want for the frog
-
-    // Adjust the position to center the image around the frog's coordinates
+    let frogWidth = 80; 
+    let frogHeight = 80; 
     let frogDrawX = frog.x - frogWidth / 2;
     let frogDrawY = frog.y - frogHeight / 2;
-
     ctx.drawImage(frogImage, frogDrawX, frogDrawY, frogWidth, frogHeight);
-    // Body
-    // ctx.fillStyle = frog.color;
-    // ctx.beginPath();
-    // ctx.ellipse(frog.x, frog.y, 20, 30, 0, 0, Math.PI * 2);
-    // ctx.fill();
-    // ctx.closePath();
-    // // Eyes
-    // ctx.fillStyle = 'white';
-    // ctx.beginPath();
-    // ctx.arc(frog.x - 8, frog.y - 10, 6, 0, Math.PI * 2);
-    // ctx.arc(frog.x + 8, frog.y - 10, 6, 0, Math.PI * 2);
-    // ctx.fill();
-    // ctx.closePath();
-    // // Pupils
-    // ctx.fillStyle = 'black';
-    // ctx.beginPath();
-    // ctx.arc(frog.x - 8, frog.y - 10, 2, 0, Math.PI * 2);
-    // ctx.arc(frog.x + 8, frog.y - 10, 2, 0, Math.PI * 2);
-    // ctx.fill();
-    // ctx.closePath();
-    // // Hind Legs
-    // ctx.fillStyle = frog.color;
-    // ctx.beginPath();
-    // ctx.ellipse(frog.x - 10, frog.y + 20, 10, 20, Math.PI / 4, 0, Math.PI * 2);
-    // ctx.fill();
-    // ctx.closePath();
-
-    // ctx.beginPath();
-    // ctx.ellipse(frog.x + 10, frog.y + 20, 10, 20, -Math.PI / 4, 0, Math.PI * 2);
-    // ctx.fill();
-    // ctx.closePath();
-
-    // // Front Legs
-    // ctx.beginPath();
-    // ctx.ellipse(frog.x - 15, frog.y + 15, 8, 16, Math.PI / 4, 0, Math.PI * 2);
-    // ctx.fill();
-    // ctx.closePath();
-
-    // ctx.beginPath();
-    // ctx.ellipse(frog.x + 15, frog.y + 15, 8, 16, -Math.PI / 4, 0, Math.PI * 2);
-    // ctx.fill();
-    // ctx.closePath();
 }
 
 function drawBase() {
-    const increasedBaseHeight = canvas.height / 1.1; // Adjust this value as needed
-    const newBaseY = canvas.height - increasedBaseHeight; // Adjust Y-coordinate to keep the base at bottom
-
+    const increasedBaseHeight = canvas.height / 1.1;
+    const newBaseY = canvas.height - increasedBaseHeight; 
     ctx.drawImage(baseImage, baseX, newBaseY, baseWidth, increasedBaseHeight);
 }
 function spawnObstacle() {
@@ -191,7 +145,6 @@ function drawObstacles() {
         // // Car body
         ctx.fillStyle = 'red'; 
         ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
-        // ctx.drawImage(yellowCar, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
 
         // Wheels
         ctx.fillStyle = 'black';
@@ -319,30 +272,6 @@ function collision(first, second){
         first.y + first.height < second.y)
 }
 
-// function checkForOceanLanding() {
-//     if (frog.y - frog.radius < oceanBottom * .83 && frog.y - frog.radius/2 > grassBottom) {
-//         console.log('You are above water');
-//         safe = false;
-
-//         let allLogs = logs.concat(logs2);
-//         for (let i = 0; i < allLogs.length; i++) {
-//             if (collision(frog, allLogs[i])) {
-//                 frog.x -= horizontalSpeed; 
-//                 safe = true;
-//                 console.log('safe')
-//                 if (frog.x - frog.radius < 0) {
-//                     handleCollision();
-//                 }
-//                 break; 
-//             }
-//         }
-
-//         if (!safe) {
-//             console.log('not safe')
-//             handleCollision();
-//         }
-//     }
-// }
 function checkForOceanLanding() {
     if (frog.y - frog.radius < oceanBottom * .83 && frog.y - frog.radius/2 > grassBottom) {
         console.log('You are above water');
@@ -365,13 +294,13 @@ function checkForOceanLanding() {
             };
  
             if (collision(frogBoundingBox, logBoundingBox)) {
-                frog.x -= logSpeed; // Move frog with the log
+                frog.x -= logSpeed; 
                 safe = true;
                 console.log('safe');
                 if (frog.x - frog.radius < 0) {
                     handleCollision();
                 }
-                break; // Frog is safe, no need to check further
+                break; 
             }
         }
  
@@ -402,7 +331,6 @@ function checkIfFrogOnGrass() {
     }
 }
 
-
 function drawWinMessage() {
     ctx.drawImage(frogWallpaper, 0, 0, canvas.width, canvas.height);
     ctx.font = '48px Arial';
@@ -414,10 +342,13 @@ function drawWinMessage() {
 }
 
 function handleWin() {
+    backgroundMusic.pause();
+    let winningMusic = document.getElementById('winningMusic');
+    winningMusic.play();
     setTimeout(() => {
         isWinning = true;
         draw();
-    }, 1000);
+    }, 4000);
     horizontalSpeed = 5;
 }
 function gameOver() {
@@ -431,6 +362,9 @@ function drawGameOver() {
     ctx.fillStyle = 'red';
     ctx.textAlign = 'center';
     ctx.fillText('Game Over. Press Enter To Try Again.', canvas.width / 2, canvas.height / 2);
+    backgroundMusic.pause();
+    let losingMusic = document.getElementById('losingMusic');
+    losingMusic.play()
 }
 
 function resetGame() {
@@ -444,6 +378,22 @@ function resetGame() {
     obstacles2.length = 0;
     obstacles3.length = 0;
     horizontalSpeed = 5;
+
+    let winningMusic = document.getElementById('winningMusic');
+    winningMusic.pause();
+    winningMusic.currentTime = 0;
+
+    let losingMusic = document.getElementById('losingMusic');
+    if (losingMusic) {
+        losingMusic.pause();
+        losingMusic.currentTime = 0;
+    }
+
+    if (backgroundMusic.paused) {
+        backgroundMusic.currentTime = 0;
+        backgroundMusic.play();
+    }
+
     requestAnimationFrame(draw);
 }
 
@@ -475,12 +425,6 @@ function drawDottedLine(startX, startY, lineWidth, lineHeight) {
 function drawSand() {
     const sandTop = canvas.height / 3.9;
     const roadTop = canvas.height * .7 - 410;
-
-    // const sandGradient = ctx.createLinearGradient(0, sandTop, 0, roadTop);
-    // sandGradient.addColorStop(0, '#f2d16b');
-    // sandGradient.addColorStop(1, '#e0c080');
-
-    // ctx.fillStyle = sandGradient;
     ctx.drawImage(sandImage, 0, sandTop, canvas.width, roadTop - sandTop);
 }
 
@@ -549,10 +493,23 @@ function keyDownHandler(e) {
 
 function keyUpHandler(e) {
     if (isGameOver && e.key === "Enter") {
+        let losingMusic = document.getElementById('losingMusic');
+        if (losingMusic) {
+            losingMusic.pause();
+            losingMusic.currentTime = 0;
+        }    
+        winningMusic.currentTime = 0;
+        backgroundMusic.currentTime=0;
+        backgroundMusic.play();
         resetGame();
         requestAnimationFrame(draw); 
     }
     if (isWinning && e.key === "Enter") {
+        let winningMusic = document.getElementById('winningMusic');
+        winningMusic.pause();
+        winningMusic.currentTime = 0;
+        backgroundMusic.currentTime=0;
+        backgroundMusic.play();
         resetGame();
         requestAnimationFrame(draw)
     }
